@@ -1,0 +1,30 @@
+### 1.JdbcType与JavaType的对应关系
+| JdbcType      | JavaType                   |
+| ------------- | -------------------------- |
+| CHAR          | String                     |
+| VARCHAR       | String                     |
+| LONGVARCHAR   | String                     |
+| NUMERIC       | java.math.BigDecimal       |
+| DECIMAL       | java.math.BigDecimal       |
+| BIT           | boolean                    |
+| BOOLEAN       | boolean                    |
+| TINYINT       | byte                       |
+| SMALLINT      | short                      |
+| INTEGER       | INTEGER                    |
+| BIGINT        | long                       |
+| REAL          | float                      |
+| FLOAT         | double                     |
+| DOUBLLE       | double                     |
+| BINARY        | byte[]                     |
+| VARBINARY     | byte[]                     |
+| LONGVARBINARY | byte[]                     |
+| DATE          | java.sql.Date              |
+| TIME          | java.sql.Time              |
+| TIMESTAMP     | java.sql.Timestamp         |
+| CLOB          | clob                       |
+| BLOB          | Blob                       |
+| ARRAY         | Array                      |
+| DISTINCT      | mapping of underlying type |
+| STRUCT        | Struct                     |
+| REF           | Ref                        |
+| DATALINK      | java.net.URL               |
