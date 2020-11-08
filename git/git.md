@@ -2,7 +2,7 @@
 
 <a name="qWXwu"></a>
 ### 1.参考文档
-[Git（git-scm）](https://git-scm.com/book/zh/v2) | [Git指南（语雀）](https://yuque.antfin-inc.com/aone/git-guide)<br />
+[Git（git-scm）](https://git-scm.com/book/zh/v2)<br />
 
 <a name="ubtWx"></a>
 ### 2.快速使用
