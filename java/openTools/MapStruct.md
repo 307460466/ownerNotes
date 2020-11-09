@@ -1,10 +1,17 @@
 # MapStruct
 
 <a name="rn8Kl"></a>
-### 1.参考文档
-- 实体类之间的属性映射，基于编译期生成对应的class文件
+### 参考文档
+[MapStruct（官网）](https://mapstruct.org/)
 
-[MapStruct（官网）](https://mapstruct.org/)<br />
+- 实体类之间的属性映射，基于编译期生成对应的class文件
+   - 基于约定优于配置的方法：通过普通方法调用而非反射
+   - 编译时生成Bean映射
+   - 一个注释处理器
+- 实现原理
+   - MapStruct是一个接口，具体功能实现是由MapStruct在代码编译期创建具体实现类，通过字段的Getter/Setter方法实现字段的赋值，从而实现对象的映射
+
+
 
 <a name="Wiz72"></a>
 ### 2.快速使用
@@ -14,12 +21,12 @@
 <dependency>
   <groupId>org.mapstruct</groupId>
   <artifactId>mapstruct-jdk8</artifactId>
-  <version>1.3.1.Final</version>
+  <version>1.4.1.Final</version>
 </dependency>
 <dependency>
   <groupId>org.mapstruct</groupId>
   <artifactId>mapstruct-processor</artifactId>
-  <version>1.0.0.Final</version>
+  <version>1.4.1.Final</version>
 </dependency>
 ```
 
@@ -33,6 +40,8 @@ public class GithubReq {
     private Date birth;
     private int age;
     private String gender;
+    private Date createDate;
+    private List<Integer> followerList;
 }
 
 @Setter
@@ -46,6 +55,21 @@ public class GithubDO {
     private String gender;
     private Date gmtCreate;
     private Date gmtModified;
+    private String followers;
+}
+```
+
+- 转换工具类
+```java
+public class CoolectionUtils {
+    public static List<Integer> string2List(String str) {
+        if (StringUtils.isNoneBlank(str)) {
+            return Arrays.asList(str.split(",")).stream()
+                .map(s -> Integer.valueOf(s.trim()))
+                .collect(Collections.toList());
+        }
+        return null;
+    }
 }
 ```
 
@@ -74,95 +98,19 @@ public interface PersonConverter {
          * target：目标属性
          * dateFormat：String to Date的转换，通过SimpleDateFormat转换，对应其日期格式
          * ignore：是否忽略属性，默认false
+         * expression：表达式调用
          * */
         @Mapping(target = "id", ignore = true),
-        @Mapping(target = "gmtCreate", ignore = true),
+        @Mapping(target = "gmtCreate", dateFormat = "yyyy-MM-dd", source="createDate"),
         @Mapping(target = "gmtModified", ignore = true)
+        @Mapping(target = "
     })
     GithubDO req2do(GithubReq req);
-}
-```
-
-
-
-```java
-/**
- * Excel工具类
- * @author xie.xu
- * @version ExcelUtils.java, v 0.1 2020-07-23 18:00 xie.xu.hry Exp $$
- */
-public class ExcelUtils {
-    /** Logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExcelUtils.class);
-    /** 扩展名：xls */
-    private static final String EXTENSION_XLS = "xls";
-    /** 扩展名：xlsx */
-    private static final String EXTENSION_XLSX = "xlsx";
-
+        
     /**
-     * 根据扩展名和文件输入流构建Workbook对象
-     * @param extension 扩展名
-     * @param is 输入流
-     * @return workbook
-     */
-    public static Workbook getWorkbookByExtension(String extension, InputStream is) throws IOException {
-        if (StringUtils.equals(EXTENSION_XLS, extension)) {
-            return new HSSFWorkbook(is);
-        }
-        if (StringUtils.equals(EXTENSION_XLSX, extension)) {
-            return new XSSFWorkbook(is);
-        }
-        LogUtils.warn(LOGGER, "不支持扩展名,extension=", extension);
-        throw new BaseException(BaseResultEnum.EXTENSION_IS_NOT_SUPPORTED);
-    }
-
-    /**
-     * 根据扩展名创建的Workbook对象
-     * @param extension 扩展名
-     * @return workbook
-     */
-    public static Workbook getWorkbookByExtension(String extension) {
-        if (StringUtils.equals(EXTENSION_XLS, extension)) {
-            return new HSSFWorkbook();
-        }
-        if (StringUtils.equals(EXTENSION_XLSX, extension)) {
-            return new XSSFWorkbook();
-        }
-        LogUtils.warn(LOGGER, "不支持扩展名,extension=", extension);
-        throw new BaseException(BaseResultEnum.EXTENSION_IS_NOT_SUPPORTED);
-    }
-
-    /**
-     * 设置四边单元格边框
-     * @param cellStyle 单元格样式对象
-     * @param borderStyle 边框样式
-     * @return cellStyle
-     */
-    public static CellStyle setFillCellBorder(CellStyle cellStyle, BorderStyle borderStyle) {
-        cellStyle.setBorderBottom(borderStyle);
-        cellStyle.setBorderTop(borderStyle);
-        cellStyle.setBorderLeft(borderStyle);
-        cellStyle.setBorderRight(borderStyle);
-        return cellStyle;
-    }
-
-    /**
-     * 获取单元格数据字符串格式
-     * @param cell 单元格对象
-     * @return value string
-     */
-    public static String getCellValueString(Cell cell) {
-        CellType cellType = cell.getCellTypeEnum();
-        switch (cellType) {
-            case STRING:
-                return cell.getStringCellValue();
-            case BOOLEAN:
-                return Boolean.toString(cell.getBooleanCellValue());
-            case NUMERIC:
-                return Double.toHexString(cell.getNumericCellValue());
-            default:
-                return null;
-        }
-    }
+     * 
+     * */
+    @Mapping(target = "saleChannel", expression = "java(com.xx.demo.utils.CollectionUtils.string2List(githubDO.getFollowers))")
+    GithubReq do2Req(GithubDO githubDO);
 }
 ```
