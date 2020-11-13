@@ -33,59 +33,27 @@ $ mysqldump -uroot -p --all-databases > /home/admin/back/mysql_all_back_5.7.sql
 
 
 <a name="1AEkR"></a>
-## 版本升级
-<a name="xG6Hp"></a>
-### 5.6->5.7（Win）
-<a name="HwF4S"></a>
-#### 1.关闭MySQL5.6相关服务及进程
-```basic
-# 管理员模式	
-X:\software\mysql\mysql5.6\bin>mysqld --remove mysql5.6
-Service successfully removed.
-```
+## 升级
+<a name="ULLMD"></a>
+### Windows（管理员模式）
 
-- 在任务管理器进程中查看是否存在mysqld，如存在强制关闭
-<a name="gna7D"></a>
-#### 2.下载相关MySQL5.7压缩包
-[官方](https://dev.mysql.com/downloads/mysql/)
-
-- 5.7压缩包中无data目录及my.ini文件
-- 将5.6目录下的data目录及my.ini复制到5.7目录下
-- 修改my.ini文件
-```
-[mysqld]
-# 设置mysql的安装目录
-basedir=X:/software/mysql/mysql-5.7.30-winx64
-# 设置mysql数据库的数据的存放目录，必须是data
-datadir=X:/software/mysql/mysql-5.7.30-winx64/data
-# mysql端口
-port=3306
-# 允许最大连接数
-max_connections=200
-# 服务端字符集（默认8bit编码的latin1字符集）
-character-set-server=utf8
-# 建立新表默认存储引擎
-default-storage-engine=INNODB
-sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
-# skip-grant-tables
-[mysql]
-# mysql客户端默认字符集
-default-character-set=utf8
-```
-<a name="ySW6p"></a>
-#### 3.配置5.7相关并启动
-```basic
-# 将mysql5.7服务添加win服务队列中
-X:\software\mysql\mysql5.7.30-winx64\bin>mysql --install mysql5.7
+- 准备新版MySQL：[官网](https://downloads.mysql.com/archives/community/)
+```bash
+# 停止MySQL服务
+$>net stop mysql
+# 移除MySQL服务
+$>mysqld --remove mysql
+# 如在系统/用户环境变量中配置MySQL/bin,需要将其指定为新版MySQL/bin地址
+# 安装MySQL服务
+$>mysqld -install
 Service successfully installed.
-# 启动mysql
-X:\software\mysql\mysql5.7.30-winx64\bin>net start mysql5.7
-# 升级mysql
-X:\software\mysql\mysql5.7.30-winx64\bin>mysql-upgrade -uroot -p
-# 省略....
-# 重启Mysql即可
-X:\software\mysql\mysql5.7.30-winx64\bin>net stop mysql5.7
-X:\software\mysql\mysql5.7.30-winx64\bin>net start mysql5.7
+# 初始化MySQL，并查看初始化ROOT密码
+$>mysqld --initialize --user=mysql --console
+2020-11-13T05:41:11.222974Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2020-11-13T05:41:12.195163Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2020-11-13T05:41:13.675553Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: 0o!6+f#)ruwE
+# 启动MySQL服务
+$>net start mysql
 ```
 
 
@@ -113,3 +81,13 @@ mysql>SHOW VARAABLES LIKE "%error%";
 ```
 
 - 通过配置的datadir查找，如my.ini中配置的datadir位置下
+<a name="F9XdM"></a>
+### 连接数据库提示警告使用SSL
+
+- 数据库服务端没有身份验证下，不推荐使用SSL；5.7.6+版本会默认启用
+   - 关闭：在url后追加参数 `&useSSL=false` 
+<a name="DcvoR"></a>
+### 由于找不到vcruntime140_1.dll，无法继续执行代码
+
+- MySQL8.0 Server需要Microsoft Visual C++ 2015，当前系统缺少这部分发行组件包导致报错
+   - [微软平台下载](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads)
