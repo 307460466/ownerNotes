@@ -1,7 +1,41 @@
 # MySQL
 
 <a name="wdzN6"></a>
+## 运行机制
+- 客户端发起请求
+- 服务端接收并验证权限
+   - 验证失败，直接输出结果
+- 执行分析器（语法分析）
+   - 查询缓存
+      - 命中缓存则直接输出结果
+- 执行优化器（生产执行分析）
+- 执行器（执行语句）
+- 输出结果
+<a name="eFxpf"></a>
+### 语句执行顺序
+
+- FROM
+   - 组装不同数据源的数据
+- WHERE
+   - 基于指定条件进行数据筛选
+- GROUP BY
+   - 将数据划分多个组
+- 聚合函数
+   - 进行聚合函数计算
+- HAVING
+   - 筛选分组
+- 计算表达式
+- ORDER BY
+   - 对结果进行排序
+- LIMIT
+   - 结果分页
+
+
+<br />
+
+<a name="LvTiU"></a>
 ## 安装
+
 - yum安装
    - 访问[官网Community Downloads](https://dev.mysql.com/downloads/repo/yum/)，确认rep源（如：mysql80-community-release-el7-3.noarch.rpm）
 ```bash
