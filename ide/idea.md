@@ -1,9 +1,9 @@
 # IDEA
 
 <a name="2Ncei"></a>
-## 2.配置项
-- 项目编码及文件编码转换
-
+## 配置项
+<a name="KYQVv"></a>
+### 项目编码及文件编码转换
 【File】-【Settings】-【File Encodings】
 
    - Global Encoding：UTF-8
@@ -15,8 +15,24 @@
 
 
 
+<a name="gIa59"></a>
+### IDEA指定SpringBoot启动配置文件
+<a name="vicub"></a>
+#### VM options指定
+
+- VM options
+   - -Dspring.profiles.active=dev
+   - 在对应的配置文件中添加如下属性：spring.profiles=dev
+<a name="DSndZ"></a>
+#### Maven指定
+
+- java -jar -Dspring.profiles.active=dev
+
+
+<br />
+
 <a name="OPRw1"></a>
-## 99.FAQ
+## FAQ
 <a name="cFTdz"></a>
 ### 1）社区版IDEA启动Tomcat配置：Smart Tomcat
 非Smart Tomcat插件配置启动方式：[Gradle脚本](https://github.com/Adrninistrator/IDEA-IC-Tomcat/)
