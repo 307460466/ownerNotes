@@ -65,6 +65,8 @@ http {
 	include mime.types;
   # 配置默认类型,默认text/plain
 	default_type application/octet-stream;
+  # 服务版本是否隐藏，默认on
+  server_tokens off;
   
   # nginx服务器提供服务过程应答前端请求的日志
   # 关闭access_log
