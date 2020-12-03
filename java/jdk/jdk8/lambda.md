@@ -419,4 +419,31 @@ Stream.iterate(0, i -> i + 1).limit(list.size()).forEach(i -> {
 });
 ```
 
+- 分组统计
+```java
+/* [Person{c='A', d=10, e=75}, Person{c='B', d=24, e=61}, Person{c='D', d=16, e=20}, 
+ * Person{c='A', d=17, e=99}, Person{c='C', d=20, e=67}, Person{c='D', d=10, e=14}, 
+ Person{c='B', d=4, e=41}, Person{c='A', d=29, e=35}, Person{c='A', d=6, e=61}, 
+ Person{c='D', d=4, e=42}]
+ */
+// 按C进行分组，并对D汇总
+Map<String, Integer> d = list.stream()
+    .collect(Collectors.groupingBy(Person::getC, Collectors.summingInt(Person::getD)));
+// {A=62, B=28, C=20, D=30}
+
+// 按C进行分组，并对E汇总（不支持BigDecimal，使用reducing解决）
+Map<String, BigDecimal> e = list.stream().collect(Collectors.groupingBy(Person::getC, Collectors.reducing(BigDecimal.ZERO, Person::getE ,BigDecimal::add)));
+// {A=270, B=102, C=67, D=76}
+
+// 一次返回以分组统计好的通类型对象
+List<Person> collect = group.entrySet().stream().map(entry -> {
+    Person p = new Person();
+    p.setC(entry.getKey());
+    p.setD(entry.getValue().stream().map(Person::getD).reduce(Integer::sum).orElse(0));
+    p.setE(entry.getValue().stream().map(Person::getE).reduce(BigDecimal.ZERO, BigDecimal::add));
+    return p;
+}).collect(Collectors.toList());
+// [Person{c='A', d=75, e=304}, Person{c='B', d=4, e=17}, Person{c='D', d=36, e=255}]
+```
+
 
