@@ -1,32 +1,33 @@
 # Git
 
-<a name="qWXwu"></a>
-### 1.参考文档
-[Git（git-scm）](https://git-scm.com/book/zh/v2)<br />
+<a name="jSSPD"></a>
+## 参考文档
+[Git（git-scm）](https://git-scm.com/book/zh/v2) <br />
 
-<a name="ubtWx"></a>
-### 2.快速使用
+<a name="cft8r"></a>
+## 快速使用
 
-- Git安装：[官网](https://git-scm.com/) | [淘宝镜像](https://npm.taobao.org/mirrors/git-for-windows)
+- Git安装：[Win下载](https://git-scm.com/download/win) | [Linux安装](https://git-scm.com/download/linux)
    - centeOs：
 ```bash
 $yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
 ```
 
 - Git版本查看：git --version
-<a name="Zlodq"></a>
-#### 1）Git设置
+<a name="Zgf23"></a>
+### Git设置
 ```bash
 # 设置全局用户名和邮箱
 $git config --global user.name "测试名"
-$git config --global user.email "ceshi.a@alipay.com"
+$git config --global user.email "ceshi.a@test.com"
 ```
 
+<br />
 
-<a name="y7h1y"></a>
-### 常用命令
-<a name="ZX4ku"></a>
-#### 1）git remote
+<a name="b0LVP"></a>
+## 相关命令
+<a name="v3xT5"></a>
+### git remote
 ```bash
 # 查看远程仓库简写名及对应URL
 $ git remote -v
@@ -37,8 +38,8 @@ $ git rmeote rm [name]
 # 远程仓库简写名重命名
 $ git remote rename [oldName] [newName]
 ```
-<a name="GrACS"></a>
-#### 2）git branch
+<a name="DyfGv"></a>
+### git branch
 ```bash
 # 查看本地所有分支及当前所在分支
 $ git branch
@@ -47,46 +48,56 @@ $ git branch -r
 # 查看本地分支与远程关系关联关系（无[origin/Xxx]标识未绑定远程分支）
 $ git branch -vv
 ```
-<a name="gDBLu"></a>
-#### 
-<a name="V9gPn"></a>
-#### 1）提交相关
-```
-git status   							//查看当前add后的修改状态
-git add 文件目录/文件名		//添加指定目录或文件的修改内容
-git add .									//添加该仓库下所有修改的文件
-git commit -m '提交注释'	//将本轮所有'git add'暂存的文件，提交到本地仓库，并增加提交注释
-```
-<a name="a8cc9c0c"></a>
-#### 2）本地与远程的拉取及推送
-```
-//拉取指定远程的指定分支（默认为origin,分支默认同当前名如无则为master）
-git fetch [origin name] [branch name]
-//拉取指定远程的指定分支，并合并到当前分支中 git pull = git fetch + git merge
-git pull [origin name] [branch name] 
-//将本地分支推送到指定远程的指定分支上
-git push [origin name] [branch name]
-```
-<a name="6dc41b27"></a>
-#### 3）本地与远程的关联
-```bash
 
-// 查看远程分支
-git branch -r
-// 查看本地分支与远程分支关联（无[origin/Xxx]标识未绑定远程分支）
-git branch -vv
+
+<a name="M8cF2"></a>
+## 常用命令
+<a name="U3BLJ"></a>
+### 提交相关
+```bash
+# 查看当前add后的修改状态
+$ git status
+# 添加指定目录或文件的修改内容 [directory] or [directory/filename]
+$ git add a.md test/b.md
+# 添加该仓库下所有修改的文件
+$ git add .
+# 将本轮所有'git add'暂存的文件，提交到本地仓库，并增加提交注释
+$ git commit -m '提交注释'
+```
+<a name="MN7DX"></a>
+### 本地与远程的拉取及推送
+```bash
+# 拉取指定远程的指定分支（默认为origin,分支默认同当前名如无则为master）
+$ git fetch [origin name] [branch name]
+# 拉取指定远程的指定分支，并合并到当前分支中 git pull = git fetch + git merge
+$ git pull [origin name] [branch name] 
+# 将本地分支推送到指定远程的指定分支上
+$ git push [origin name] [branch name]
+```
+<a name="BDN10"></a>
+### 本地与远程的关联
+```bash
+# 查看远程分支
+$ git branch -r
+# 查看本地分支与远程分支关联（无[origin/Xxx]标识未绑定远程分支）
+$ git branch -vv
 master 139edea[origin/master:behind 3] f
 v1.0 139edeb a
-// 当前分支关联远程分支
-git branch --set-upstream-to=origin/branch
+# 当前分支关联远程分支
+$ git branch --set-upstream-to=origin/branch
 ```
-<a name="3a7465d8"></a>
-#### 4）克隆时更改文件夹名称
+<a name="69aVM"></a>
+### 克隆时更改文件夹名称
+```bash
+$ git clone https://github.com/527515025/springBoot.git spring-boot
 ```
-git clone https://github.com/527515025/springBoot.git spring-boot
+<a name="Wp4LK"></a>
+### 克隆指定分支
+```bash
+$ git clone -b dev https://github.com/527515025/springBoot.git
 ```
-<a name="ba9965f1"></a>
-#### 5）配置免密登录（SSH）
+<a name="5EwkC"></a>
+### 配置免密登录（SSH）
 
 - 查看本机ssh publicKey：`ls -al ~/.ssh`,如无`id_ras/id_ras.pub`这一类的文件就表示无
 - 指定email生成shh公钥：`ssh-keygen -t rsa -C 'youremail@email.com`
@@ -102,16 +113,23 @@ git clone https://github.com/527515025/springBoot.git spring-boot
    - 确认ssh-agent是否启用：`eval "$(ssh-agent -s)"`
    - 添加密钥管理:`ssh-add ${system}/Users/${user}/.ssh/id_rsa`
 - 输入`ssh -T git@github.com`，确认是否为`successfully`
-<a name="kIRIV"></a>
-#### 6）查看文件变动记录
+<a name="b4fa9512"></a>
+### 查看文件变动记录
+```bash
+# 查看git status中文件的详细变动
+$ git diff
+# 查看某个文件变动,commit形式展现
+$ git log filename
+# 查看某个文件的历史变动记录（commit记录及变动详情）
+$ git log -p filename
+# 查看两个分支之间差异文件
+$ git diff branchA branchB --stat
+```
 
-1. `git diff` ：查看git status中文件的详细变动
-1. `git log file` ：查看某个文件的变动，以commit形式展现
-1. `git log -p file` ：查看某个文件的历史改动记录（commit记录及其变动详情）
-1. `git diff branch1 branch2 --stat` ：查看两个分支之间有差异的文件
-<a name="umwSI"></a>
-### 其他
-<a name="iGOtk"></a>
-#### 1）常用插件
+
+<a name="6AAXU"></a>
+## 其他
+<a name="V0s3a"></a>
+### 常用插件
 
 - GitLens：快速定位每行代码的提交记录；快速查看文件的提交历史
