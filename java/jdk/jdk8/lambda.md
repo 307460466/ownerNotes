@@ -1,30 +1,30 @@
 # lambda
 
-<a name="MjnrS"></a>
-## 概述
-lambda即一个匿名的方法，是简洁的编写代码方式<br />匿名方法与匿名类是有区别的，后者需实例化对象，前者是与作用分离的
+lambda表达式是JDK8引入的新功能（语法糖），类似JS中的闭包；通过一个匿名的方法（函数化的语法）简化编写代码的方式。
 
-   - 类必须实例化，而方法不必；
-   - 当一个类被新建时，需要给对象分配内存；
-   - 方法只需要分配一次内存，它被存储在堆的永久区内；
-   - 对象作用于它自己的数据，而方法不会；
-   - 静态类里的方法类似于匿名方法的功能。
 - 基本结构 `(arguments) -> body` 
    - 参数类型可推导时，不需指定类型： `(a,b) -> a + b` 
    - 当仅有一个参数且类型可推导时，不强制写 `()` ： `a -> a + 1` 
    - 参数指定类型，必须有括号： `(Integer i) -> i + 1` 
    - 参数可为空： `() -> "hello, lambda"` 
    - body需要用 `{}` 包含语句，当仅有一条语句时可省略
+- lambda表达式与匿名内部类的区别
+| - | lambda表达式 | 匿名内部类 |
+| --- | --- | --- |
+| 类型不同 | 只支持单抽象方法的接口 | 接口、抽象类、具体类 |
+| 是否需要实例化 | 否 | 需要 |
+| 内存分配 | 只需分配一次内存，存储在堆的永久区中 | 类被新建时，需要给对象分配内存 |
+| 实现原理 | 编译后，无单独的字节码文件，对应字节码在运行时动态生成 | 编译后，生成单独的字节码文件 |
 
 
 
 <a name="c63466b3"></a>
 ## 函数式接口
-函数式接口声明，在接口上添加注解 `@FunctionalInterface`
+函数式接口：只有一个抽象方法的接口，目的是为了某一个单一的操作<br />函数式接口声明，在接口上添加注解 `@FunctionalInterface`
 
 - JDK8之前已存在被标注为函数式接口的接口
    - java.lang.Runnable
-   - java.util.COmparator
+   - java.util.Comparator
    - java.util.concurrent.Callable
    - java.io.FileFilter
    - java.security.PrivilegedAction
@@ -50,7 +50,6 @@ lambda即一个匿名的方法，是简洁的编写代码方式<br />匿名方�
 函数式接口：只包含一个抽象方法声明的接口
 ```java
 List<String> names = Arrays.asList("peter", "anna", "mike", "xenia");
-
 Collections.sort(names, new Comparator<String>() {
     @Override
     public int compare(String a, String b) {
@@ -151,6 +150,59 @@ public class VarTest {
    - 编译不支持
 
 
+
+<a name="mYs4a"></a>
+## 方法引用
+
+- 语法
+   - 构造方法引用： `Type::new` 
+   - 数组构造方法引用：`Type[]::new`
+   - 静态方法引用：`Type::methodName`
+   - 实例对象的实例方法引用：`instanceName::methodName`
+   - 实例类型的实例方法引用：`Type::methodName`
+```java
+// 方法引用写法
+Function<String, Integer> function = Integer::new;
+// lambda写法
+function = str -> new Integer(str);
+// 传统写法
+function = new Function<String, Integer>() {
+    public Integer apply(String str) {
+        return new Integer(str);
+    }
+}
+
+// 数组构造方法引用
+Function<Integer, String[]> function = String[]::new;
+// lambda写法
+function = length -> new String[length];
+// 传统写法
+function = new Function<Integer, String[]>() {
+    public String[] apply(Integer length) {
+        return new String[length];
+    }
+}
+
+// 静态方法引用
+Function<Integer, String[]> function = String[]::new;
+// lambda写法
+function = length -> new String[length];
+// 传统写法
+function = new Function<Integer, String[]>() {
+    public String[] apply(Integer length) {
+        return new String[length];
+    }
+}
+
+// 实例对象的实例方法引用
+List list = Arrays.asList("bikaqiu", "bikabika", "bika");
+Predicate<String> predicate = list::contains;
+
+// 实例类型的实例方法引用
+Function<String, Integer> function = String::length;
+```
+
+<br />
 
 <a name="7ixpd"></a>
 ## 内置函数式接口
@@ -292,7 +344,8 @@ JDK8引入的新特性， `java.util.stream` 包中，是一组支持串行并�
 - 流中止操作，遍历每个元素
 ```java
 List<String> list = Arrays.asList("B", "C", "H", "A");
-list.stream().forEach(System.out::println);
+// 简写list.stream().forEach(System.out::println);
+list.stream().forEach(e -> System.out.println(e));
 ```
 <a name="cFowe"></a>
 #### filter
@@ -326,7 +379,7 @@ List<String> list = Arrays.asList("Bob", "Car", "Height", "ALICE");
 list.stream().map(s -> s.toLowerCase(Locale.CHINA)).forEach(System.out::println);
 ```
 <a name="FWPyn"></a>
-#### match操作
+#### match
 
 - 流中止操作，判断某一种规则是否与流对象中的元素匹配，返回Boolean值
 ```java
