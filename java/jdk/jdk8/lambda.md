@@ -329,13 +329,18 @@ String[] apply = sp.apply("this.is.Test,sdjsk.sdfav", "\\.");
 
 <a name="yZvOE"></a>
 ## Stream
-JDK8引入的新特性， `java.util.stream` 包中，是一组支持串行并行聚合操作的元素，即集合/迭代器的增强版
+[Streams API详解](https://developer.ibm.com/zh/articles/j-lo-java8streamapi/)<br />JDK8引入的新特性， `java.util.stream` 包中，是一组支持串行并行聚合操作的元素，即集合/迭代器的增强版
 
 - stream()：串行执行流对象操作
 - paralleStream()：并行执行流对象操作
+- Arrays.stream(T array)：将数组转换为流对象操作
 - 特性
    - 单次处理，即一次处理完毕后，当前Stream关闭
    - 支持并行操作
+- 流的基本步骤
+   - 获取数据源
+   - 数据转换：每次转换原有Stream对象不改变，会返回新Stream对象
+   - 执行操作获取结果
 <a name="Um4YB"></a>
 ### 方法
 <a name="a7iFl"></a>
