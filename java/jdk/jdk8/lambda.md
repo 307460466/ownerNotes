@@ -266,10 +266,26 @@ list.sort(Comparator.comparing(Person::getAge)
 <a name="5CRVN"></a>
 ### Optionals
 
-- 存储一个对象值，可能为NULL可能非NULL
+- 存储一个对象值，解决NPE问题
+```java
+// 传统写法
+if (user == null) {
+    doSomething();
+}
+// 优雅写法
+Optional.ofNullable(user).ifPresent(u -> doSomething());
 
+// orEles-不论Optional对象是否含空值，都会执行调用；orElseGet-则只会在Optional对象含空值时调用
+user = null;
+Optional.ofNullable(user).orElse(createNewUser())
+Optional.ofNullable(user).orElseGet(createNewUser());
 
-<br />
+// filter 结果为true则返回对象，否则返回含空值的Optional
+user = new User("a");
+Optional.ofNullable(user)
+    .filter(u -> StringUtils.equals("a", user.getName());
+```
+
 
 <a name="375729eb"></a>
 ## 方法引用
