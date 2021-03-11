@@ -472,6 +472,14 @@ list.stream().limit(4).forEach(System.out::println);
 // 过滤负数元素
 List<Integer> list = Arrays.asList(33, -10, 60 ,-4, 6, 80 , -33);
 List<Integer> collect = list.stream().filter(i -> i >= 0).collect(Collectors.toList());
+// User[id,name,age]
+// 将List<User>转换为Map<id, name>
+userList.stream().collect(Collectors.toMap(User::getId, User::getName));
+// 将List<User>转换为Map<id, User>
+userList.stream().collect(Collectors.toMap(User::getId, User -> User));
+userList.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+// List<User>存在key冲突问题转换
+userList.stream().collect(Collectors.toMap(User::getId, Function.identity(), (k1, k2) -> k2));
 ```
 <a name="p5WlC"></a>
 #### mapToInt/mapToLong/mapToDouble
